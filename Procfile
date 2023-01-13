@@ -1,1 +1,1 @@
-web: node --openssl-legacy-provider index.js
+web: node index.js

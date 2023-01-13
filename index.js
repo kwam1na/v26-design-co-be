@@ -26,7 +26,7 @@ app.post("/api/submit", async (req, res) => {
     try {
       await doc.useServiceAccountAuth({
         client_email: CLIENT_EMAIL,
-        private_key: PRIVATE_KEY,
+        private_key: PRIVATE_KEY.split(String.raw`\n`).join('\n'),
       });
       // loads document properties and worksheets
       await doc.loadInfo();
