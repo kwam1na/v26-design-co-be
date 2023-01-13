@@ -20,19 +20,17 @@ PRIVATE_KEY = PRIVATE_KEY.replace(/\n/g, "\n");
 app.post("/api/submit", async (req, res) => {
 
   const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
-    const { name, email, bio } = req.body;
-    const newRow = { Name: name, Email: email, Bio: bio };
+    const { name, email, services, message } = req.body;
+    const newRow = { Name: name, Email: email, Services: services, Message: message };
 
     try {
       await doc.useServiceAccountAuth({
         client_email: CLIENT_EMAIL,
         private_key: PRIVATE_KEY.split(String.raw`\n`).join('\n'),
       });
-      // loads document properties and worksheets
       await doc.loadInfo();
-
       const sheet = doc.sheetsById[SHEET_ID];
-      const _result = await sheet.addRow(newRow);
+      await sheet.addRow(newRow);
       res.status(200).json({ data: "Success" });
     } catch (e) {
       console.error("Error: ", e);
